@@ -17,14 +17,14 @@ def execute_sql(sql, value = (), commit = False, single = False):
     connection = open_connection()
     cursor = connection.execute(sql, value)
     if commit == True:
-        result = connection.commit()
+        results = connection.commit()
     else:
-        result = cursor.fetchone if single else cursor.fetchall()
+        results = cursor.fetchone() if single else cursor.fetchall()
     cursor.close()
     return result
     
 @app.teardown_appcontext
-def close_connection():
+def close_connection(exception):
     connection = getattr(g, '_connection', None)
     if connection is not None:
         connection.close()
